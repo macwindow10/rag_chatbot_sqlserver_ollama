@@ -1,0 +1,10 @@
+
+write code in python to develop RAG based Chatbot on SQL server database. Use Ollama.
+DB has two tables Person and Event. 
+Person table has columns: Id, Name, SSN, Bio Data, Education, Profession. 
+Event table has columns: Id, Subject, Date, Source, Location, Description, Persons Involved.
+
+Chat bot should answer following queries:
+* What events involved John Smith in 2023?
+* List people whose profession is Doctor and who attended events on Climate Change.
+* List events happened in Washington DC during Feb 2023 to June 2023.
