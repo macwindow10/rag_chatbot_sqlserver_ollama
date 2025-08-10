@@ -19,7 +19,7 @@ from chromadb.config import Settings
 from dotenv import load_dotenv
 
 
-print(pyodbc.drivers())
+# print(pyodbc.drivers())
 
 
 load_dotenv()
@@ -72,7 +72,7 @@ def row_to_person_doc(row: pyodbc.Row) -> Dict[str, Any]:
     meta = {"table": "Person", "id": str(row.Id)}
     name = getattr(row, "Name", "")
     ssn = mask_ssn(getattr(row, "SSN", "") or "")
-    bio = getattr(row, "Bio Data", "") if "Bio Data" in row.cursor_description else getattr(row, "BioData", "") if "BioData" in row.cursor_description else getattr(row, "Bio_Data", "")
+    bio = getattr(row, "BioData", "") 
     # To be robust, try typical column names
     # Compose a short document
     doc_text = textwrap.dedent(f"""
@@ -82,7 +82,7 @@ def row_to_person_doc(row: pyodbc.Row) -> Dict[str, Any]:
         SSN: {ssn}
         Bio: {bio}
         Education: {getattr(row, 'Education', '')}
-        Profession: {getattr(row, 'Profession', '')}
+        Work: {getattr(row, 'Work', '')}
     """).strip()
     return {"id": meta["id"], "text": doc_text, "meta": meta}
 
@@ -96,10 +96,13 @@ def row_to_event_doc(row: pyodbc.Row) -> Dict[str, Any]:
         Subject: {getattr(row, 'Subject', '')}
         Date: {getattr(row, 'Date', '')}
         Source: {getattr(row, 'Source', '')}
-        Location: {getattr(row, 'Location', '')}
+        Latitude: {getattr(row, 'Latitude', '')}
+        Longitude: {getattr(row, 'Longitude', '')}
+        Address: {getattr(row, 'Address', '')}
         Description: {getattr(row, 'Description', '')}
         Persons Involved: {persons_involved}
     """).strip()
+    # print(doc_text)
     return {"id": meta["id"], "text": doc_text, "meta": meta}
 
 # ---------- DB ingestion ----------
@@ -151,12 +154,22 @@ def load_and_index_all():
     # Generate embeddings in batches using Ollama embedding endpoint
     # Ollama's python client exposes a .embeddings(...) function in examples
     # We'll call it iteratively in small batches to avoid timeouts.
-    BATCH = 32
+    
+    # BATCH = 32
+    BATCH = 1
     all_embeddings = []
     for i in range(0, len(docs_texts), BATCH):
-        batch_texts = docs_texts[i:i+BATCH]
-        print(batch_texts)
-        resp = ollama_client.embeddings(model=EMBED_MODEL, prompt=batch_texts)  # supports list input in many setups
+        batch_texts = [str(text).replace('\r', ' ').replace('\n', ' ') for text in docs_texts[i:i+BATCH]]
+        # print(batch_texts)
+        # Ensure all items are strings and no newlines
+        batch_texts_clean = [str(text).replace('\n', ' ').strip() for text in batch_texts]
+        # print('batch_texts_clean', len(batch_texts_clean))
+        # print(batch_texts_clean[0])
+        # Defensive: if only one doc, still pass as list        
+        if len(batch_texts_clean) == 1:
+            resp = ollama_client.embeddings(model=EMBED_MODEL, prompt=batch_texts_clean[0])
+        else:
+            resp = ollama_client.embeddings(model=EMBED_MODEL, prompt=batch_texts_clean)
         # Response shape depends on Ollama client version: normalize
         # If resp is list/dict, extract 'embedding' fields accordingly
         # We'll accept resp to be either a list of dicts or a dict with 'embedding' for single item.
@@ -175,13 +188,16 @@ def load_and_index_all():
 
     # Add to Chroma
     # We may want to upsert to update existing docs
+    embeddings2 = [e[1] for e in all_embeddings]
+    #for e in all_embeddings:
+    #    print(e[1])
     collection.add(
         ids=docs_ids,
         documents=docs_texts,
         metadatas=docs_metadatas,
-        embeddings=all_embeddings
+        embeddings=embeddings2
     )
-    chroma_client.persist()
+    # chroma_client.persist()
     print("[+] Indexed documents into ChromaDB")
 
 # ---------- Retrieval + answer generation ----------
@@ -194,12 +210,17 @@ def retrieve_context(query: str, top_k: int = TOP_K):
     q_resp = ollama_client.embeddings(model=EMBED_MODEL, prompt=query)
     if isinstance(q_resp, dict) and "embedding" in q_resp:
         q_emb = q_resp["embedding"]
+        # print("q_emb:1")
     elif isinstance(q_resp, list) and len(q_resp) > 0 and isinstance(q_resp[0], dict) and "embedding" in q_resp[0]:
         q_emb = q_resp[0]["embedding"]
+        # print("q_emb:2")
     else:
         # fallback: assume direct list returned
-        q_emb = q_resp
+        q_emb = q_resp["embedding"]
+        # print("q_emb:3")
 
+    # print("q_emb:", q_emb)
+    
     results = collection.query(query_embeddings=[q_emb], n_results=top_k, include=["documents", "metadatas", "distances"])
     docs = results["documents"][0]
     metadatas = results["metadatas"][0]

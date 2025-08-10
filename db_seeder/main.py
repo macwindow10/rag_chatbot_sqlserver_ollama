@@ -4,8 +4,8 @@ from faker import Faker
 fake = Faker()
 
 # Configuration
-num_events = 300
-num_persons = 300
+num_events = 10
+num_persons = 5
 
 # Generate Event INSERTs
 event_inserts = []
