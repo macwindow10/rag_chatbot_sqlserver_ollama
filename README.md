@@ -2,6 +2,8 @@
 
 This project implements a Retrieval-Augmented Generation (RAG) chatbot that answers questions about people and events stored in a SQL Server database.
 
+<img src="images/RAG_Chatbot_over_SQLServer_using_Ollama_ChromaDB.png" alt="Workflow" style="width:50%; height:auto;">
+
 It uses:
 
 - 🦙 **Ollama** for local LLM and embedding models
