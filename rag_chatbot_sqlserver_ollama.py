@@ -206,7 +206,7 @@ def retrieve_context(query: str, top_k: int = TOP_K):
     ollama_client = Client(host=OLLAMA_HOST)
     chroma_client = PersistentClient(path=CHROMA_PERSIST_DIR)
     collection = chroma_client.get_collection("sql_docs")
-    print(f"collection length: {len(collection)}")
+    print(f"collection length: {collection.count()}")
     
     q_resp = ollama_client.embeddings(model=EMBED_MODEL, prompt=query)
     if isinstance(q_resp, dict) and "embedding" in q_resp:
