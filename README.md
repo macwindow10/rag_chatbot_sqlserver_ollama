@@ -1,17 +1,14 @@
-
 # 🤖 RAG Chatbot over SQL Server using Ollama & ChromaDB
-
 
 This project implements a Retrieval-Augmented Generation (RAG) chatbot that answers questions about people and events stored in a SQL Server database.
 
 It uses:
+
 - 🦙 **Ollama** for local LLM and embedding models
 - 🗄️ **SQL Server** for data storage
 - 🧠 **ChromaDB** for vector storage and retrieval
 
-
 ## ✨ Features
-
 
 - 🗄️ Connects to SQL Server and ingests data from `Person` and `Event` tables
 - 🛡️ Masks SSNs for privacy before embedding
@@ -20,9 +17,7 @@ It uses:
 - 💬 Answers natural language questions using context retrieved from the database
 - 🖥️ CLI for indexing, asking questions, and running example queries
 
-
 ## 📦 Requirements
-
 
 - 🐍 Python 3.8+
 - 🗄️ SQL Server (local or remote)
@@ -30,9 +25,7 @@ It uses:
 - 🧠 ChromaDB
 - 📦 Required Python packages: `pyodbc`, `ollama`, `chromadb`, `python-dotenv`
 
-
 ## ⚡ Setup
-
 
 1. 🛠️ **Clone the repository**
 2. 📦 **Install dependencies**:
@@ -61,9 +54,7 @@ It uses:
    ```
 5. 🗄️ **Prepare your SQL Server database** with `Person` and `Event` tables. See `insert_queries.sql` for example schema and seed data.
 
-
 ## 🚀 Usage
-
 
 ### 📥 Index Data
 
@@ -71,13 +62,11 @@ It uses:
 python rag_chatbot_sqlserver_ollama.py --index
 ```
 
-
 ### ❓ Ask a Question
 
 ```powershell
 python rag_chatbot_sqlserver_ollama.py --ask "What events involved John Smith in 2023?"
 ```
-
 
 ### 🧪 Run Example Queries
 
@@ -85,9 +74,7 @@ python rag_chatbot_sqlserver_ollama.py --ask "What events involved John Smith in
 python rag_chatbot_sqlserver_ollama.py --examples
 ```
 
-
 ## 📁 File Structure
-
 
 - `rag_chatbot_sqlserver_ollama.py` — 🐍 Main script
 - `insert_queries.sql` — 🗄️ Example SQL seed data
@@ -95,21 +82,16 @@ python rag_chatbot_sqlserver_ollama.py --examples
 - `db_seeder/main.py` — 🌱 Optional DB seeder script
 - `chatgpt_prompt/` — 💬 (Optional) prompt templates
 
-
 ## 🛠️ Customization
-
 
 - 🔄 Change embedding/LLM models in `.env` as needed
 - 📝 Adjust SQL queries for your schema
 - 🧩 Extend document formatting in `row_to_person_doc` and `row_to_event_doc`
 
-
 ## 📄 License
 
 MIT
 
-
 ## 👤 Author
 
-macwindow10
 mac.window.10@gmail.com
