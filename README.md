@@ -1,32 +1,45 @@
-# RAG Chatbot over SQL Server using Ollama & ChromaDB
 
-This project implements a Retrieval-Augmented Generation (RAG) chatbot that answers questions about people and events stored in a SQL Server database. It uses Ollama for local LLM and embedding models, and ChromaDB for vector storage and retrieval.
+# 🤖 RAG Chatbot over SQL Server using Ollama & ChromaDB
 
-## Features
 
-- Connects to SQL Server and ingests data from `Person` and `Event` tables
-- Masks SSNs for privacy before embedding
-- Generates embeddings using Ollama's embedding models
-- Stores and retrieves document embeddings with ChromaDB
-- Answers natural language questions using context retrieved from the database
-- CLI for indexing, asking questions, and running example queries
+This project implements a Retrieval-Augmented Generation (RAG) chatbot that answers questions about people and events stored in a SQL Server database.
 
-## Requirements
+It uses:
+- 🦙 **Ollama** for local LLM and embedding models
+- 🗄️ **SQL Server** for data storage
+- 🧠 **ChromaDB** for vector storage and retrieval
 
-- Python 3.8+
-- SQL Server (local or remote)
-- Ollama (local LLM/embedding server)
-- ChromaDB
-- Required Python packages: `pyodbc`, `ollama`, `chromadb`, `python-dotenv`
 
-## Setup
+## ✨ Features
 
-1. **Clone the repository**
-2. **Install dependencies**:
+
+- 🗄️ Connects to SQL Server and ingests data from `Person` and `Event` tables
+- 🛡️ Masks SSNs for privacy before embedding
+- 🦙 Generates embeddings using Ollama's embedding models
+- 🧠 Stores and retrieves document embeddings with ChromaDB
+- 💬 Answers natural language questions using context retrieved from the database
+- 🖥️ CLI for indexing, asking questions, and running example queries
+
+
+## 📦 Requirements
+
+
+- 🐍 Python 3.8+
+- 🗄️ SQL Server (local or remote)
+- 🦙 Ollama (local LLM/embedding server)
+- 🧠 ChromaDB
+- 📦 Required Python packages: `pyodbc`, `ollama`, `chromadb`, `python-dotenv`
+
+
+## ⚡ Setup
+
+
+1. 🛠️ **Clone the repository**
+2. 📦 **Install dependencies**:
    ```powershell
    pip install -r requirements.txt
    ```
-3. **Configure environment variables**:
+3. ⚙️ **Configure environment variables**:
    - Create a `.env` file in the project root with:
      ```env
      SQL_SERVER=localhost
@@ -41,52 +54,62 @@ This project implements a Retrieval-Augmented Generation (RAG) chatbot that answ
      TOP_K=6
      ```
    - Adjust values as needed for your environment.
-4. **Start Ollama** and pull required models:
+4. 🦙 **Start Ollama** and pull required models:
    ```powershell
    ollama pull mxbai-embed-large:latest
    ollama pull llama3.2:latest
    ```
-5. **Prepare your SQL Server database** with `Person` and `Event` tables. See `insert_queries.sql` for example schema and seed data.
+5. 🗄️ **Prepare your SQL Server database** with `Person` and `Event` tables. See `insert_queries.sql` for example schema and seed data.
 
-## Usage
 
-### Index Data
+## 🚀 Usage
+
+
+### 📥 Index Data
 
 ```powershell
 python rag_chatbot_sqlserver_ollama.py --index
 ```
 
-### Ask a Question
+
+### ❓ Ask a Question
 
 ```powershell
 python rag_chatbot_sqlserver_ollama.py --ask "What events involved John Smith in 2023?"
 ```
 
-### Run Example Queries
+
+### 🧪 Run Example Queries
 
 ```powershell
 python rag_chatbot_sqlserver_ollama.py --examples
 ```
 
-## File Structure
 
-- `rag_chatbot_sqlserver_ollama.py` — Main script
-- `insert_queries.sql` — Example SQL seed data
-- `chroma_db/` — ChromaDB persistent storage
-- `db_seeder/main.py` — Optional DB seeder script
-- `chatgpt_prompt/` — (Optional) prompt templates
+## 📁 File Structure
 
-## Customization
 
-- Change embedding/LLM models in `.env` as needed
-- Adjust SQL queries for your schema
-- Extend document formatting in `row_to_person_doc` and `row_to_event_doc`
+- `rag_chatbot_sqlserver_ollama.py` — 🐍 Main script
+- `insert_queries.sql` — 🗄️ Example SQL seed data
+- `chroma_db/` — 🧠 ChromaDB persistent storage
+- `db_seeder/main.py` — 🌱 Optional DB seeder script
+- `chatgpt_prompt/` — 💬 (Optional) prompt templates
 
-## License
+
+## 🛠️ Customization
+
+
+- 🔄 Change embedding/LLM models in `.env` as needed
+- 📝 Adjust SQL queries for your schema
+- 🧩 Extend document formatting in `row_to_person_doc` and `row_to_event_doc`
+
+
+## 📄 License
 
 MIT
 
-## Author
+
+## 👤 Author
 
 macwindow10
 mac.window.10@gmail.com
