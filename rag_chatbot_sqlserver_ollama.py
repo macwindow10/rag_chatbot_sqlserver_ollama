@@ -42,7 +42,7 @@ LLM_MODEL = os.getenv("LLM_MODEL", "llama3.2:latest")                 # pick an 
 CHROMA_PERSIST_DIR = os.getenv("CHROMA_PERSIST_DIR", "./chroma_db")
 
 # retrieval config
-TOP_K = int(os.getenv("TOP_K", "6"))
+TOP_K = int(os.getenv("TOP_K", "3"))
 
 # ---------- Utilities ----------
 def get_sql_connection():
@@ -164,7 +164,7 @@ def load_and_index_all():
         # Ensure all items are strings and no newlines
         batch_texts_clean = [str(text).replace('\n', ' ').strip() for text in batch_texts]
         # print('batch_texts_clean', len(batch_texts_clean))
-        # print(batch_texts_clean[0])
+        print(batch_texts_clean[0])
         # Defensive: if only one doc, still pass as list        
         if len(batch_texts_clean) == 1:
             resp = ollama_client.embeddings(model=EMBED_MODEL, prompt=batch_texts_clean[0])

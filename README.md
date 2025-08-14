@@ -6,14 +6,14 @@ It uses:
 
 - 🦙 **Ollama** for local LLM and embedding models
 - 🗄️ **SQL Server** for data storage
-- 🧠 **ChromaDB** for vector storage and retrieval
+- 🗄️ **ChromaDB** for vector storage and retrieval
 
 ## ✨ Features
 
 - 🗄️ Connects to SQL Server and ingests data from `Person` and `Event` tables
 - 🛡️ Masks SSNs for privacy before embedding
 - 🦙 Generates embeddings using Ollama's embedding models
-- 🧠 Stores and retrieves document embeddings with ChromaDB
+- 🗄️ Stores and retrieves document embeddings with ChromaDB
 - 💬 Answers natural language questions using context retrieved from the database
 - 🖥️ CLI for indexing, asking questions, and running example queries
 
@@ -22,7 +22,7 @@ It uses:
 - 🐍 Python 3.8+
 - 🗄️ SQL Server (local or remote)
 - 🦙 Ollama (local LLM/embedding server)
-- 🧠 ChromaDB
+- 🗄️ ChromaDB
 - 📦 Required Python packages: `pyodbc`, `ollama`, `chromadb`, `python-dotenv`
 
 ## ⚡ Setup
